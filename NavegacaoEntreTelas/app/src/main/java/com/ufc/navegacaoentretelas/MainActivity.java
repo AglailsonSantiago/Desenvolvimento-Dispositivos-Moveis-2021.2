@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         listaCarros = new ArrayList<Carro>();
 
-        adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, listaCarros);
+        adapter = new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1, listaCarros);
 
         listViewCarros = findViewById(R.id.listCarros);
         listViewCarros.setAdapter(adapter);
@@ -83,27 +83,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void editar(View view){
-        Intent intent = new Intent(this, ActivityADDeEDIT.class);
+        if( listaCarros.size() > 0 && selected >= 0) {
+            Intent intent = new Intent(this, ActivityADDeEDIT.class);
 
-        Carro carro = listaCarros.get(selected);
+            Carro carro = listaCarros.get(selected);
 
-        intent.putExtra("id", carro.getId());
-        intent.putExtra("nome", carro.getNome());
-        intent.putExtra("marca", carro.getMarca());
-        intent.putExtra("placa", carro.getPlaca());
-        intent.putExtra("ano", carro.getAno());
+            intent.putExtra("id", carro.getId());
+            intent.putExtra("nome", carro.getNome());
+            intent.putExtra("marca", carro.getMarca());
+            intent.putExtra("placa", carro.getPlaca());
+            intent.putExtra("ano", carro.getAno());
 
-        startActivityForResult(intent, Constants.REQUEST_EDIT);
+            startActivityForResult(intent, Constants.REQUEST_EDIT);
+        }
+        else {
+            selected = -1;
+            Toast.makeText(this, "Selecione um item!", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
     public void apagarItem(View view){
-        if( listaCarros.size() > 0){
+        if( listaCarros.size() > 0 && selected >= 0){
             listaCarros.remove(selected);
             adapter.notifyDataSetChanged();
         }
         else {
             selected = -1;
+            Toast.makeText(this, "Selecione um item!", Toast.LENGTH_SHORT).show();
         }
 
     }
