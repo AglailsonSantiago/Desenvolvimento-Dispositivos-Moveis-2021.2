@@ -1,10 +1,12 @@
 package com.ufc.navegacaoentretelas;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.TextView;
 
 import com.ufc.navegacaoentretelas.model.Carro;
 
@@ -20,14 +22,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.listaCarros = listaCarros;
     }
 
-    @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         Carro carro = (Carro) getGroup(groupPosition);
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_group, null);
         }
-        return null;
+
+        TextView nomeCarro = convertView.findViewById(R.id.listHeader);
+        nomeCarro.setTypeface(null, Typeface.BOLD);
+        nomeCarro.setText(carro.getNome());
+
+        return convertView;
     }
 
     public Object getGroup(int groupPosition) {
@@ -35,38 +41,54 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public int getGroupCount() {
-        return 0;
-    }
-
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        return 0;
-    }
-
-    @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return null;
+        return listaCarros.get(groupPosition);
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
+        Carro carro = (Carro) getChild(groupPosition, childPosition);
+
+        if(convertView == null){
+            LayoutInflater inflaInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflaInflater.inflate(R.layout.row_layout,null);
+        }
+
+        TextView marca = convertView.findViewById(R.id.marca);
+        TextView placa = convertView.findViewById(R.id.placa);
+        TextView ano = convertView.findViewById(R.id.ano);
+
+        marca.setText(carro.getMarca());
+        placa.setText(carro.getPlaca());
+        ano.setText(carro.getAno());
+
+        return convertView;
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return listaCarros.get( groupPosition ).getId();
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return 0;
+        return listaCarros.get(groupPosition).getId();
+    }
+
+    @Override
+    public int getGroupCount() {
+        return listaCarros.size();
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return 1;
     }
 
     @Override
     public boolean hasStableIds() {
         return false;
-    }
-
-    @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        return null;
     }
 
     @Override

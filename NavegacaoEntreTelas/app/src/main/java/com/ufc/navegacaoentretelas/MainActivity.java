@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,8 +27,10 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<Carro> listaCarros;
-    ArrayAdapter adapter;
+    //ArrayAdapter adapter;
+    ExpandableListAdapter adapter;
     ListView listViewCarros;
+    ExpandableListView expandableListView;
     int selected;
 
     @Override
@@ -39,19 +42,30 @@ public class MainActivity extends AppCompatActivity {
 
         listaCarros = new ArrayList<Carro>();
 
-        adapter = new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1, listaCarros);
+        //adapter = new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1, listaCarros);
 
-        listViewCarros = findViewById(R.id.listCarros);
-        listViewCarros.setAdapter(adapter);
-        listViewCarros.setSelector(android.R.color.holo_blue_light);
+        adapter = new ExpandableListAdapter(this, listaCarros);
 
-        listViewCarros.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        expandableListView = (ExpandableListView) findViewById(R.id.listCarros);
+        expandableListView.setAdapter(adapter);
+        expandableListView.setSelector(android.R.color.holo_green_dark);
+
+//        listViewCarros.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(MainActivity.this, "" + listaCarros.get(position).toString(), Toast.LENGTH_SHORT).show();
+//                selected = position;
+//            }
+//        });
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "" + listaCarros.get(position).toString(), Toast.LENGTH_SHORT).show();
-                selected = position;
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                selected = groupPosition;
+                return false;
             }
         });
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void apagarItem(View view){
-        if( listaCarros.size() > 0 && selected >= 0){
+        if( listaCarros.size() > 0){
             listaCarros.remove(selected);
             adapter.notifyDataSetChanged();
         }
