@@ -10,6 +10,8 @@ import com.ufc.navegacaoentretelas.model.Carro;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.provider.SyncStateContract;
 import android.util.Log;
@@ -23,6 +25,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listViewCarros;
     ExpandableListView expandableListView;
     int selected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

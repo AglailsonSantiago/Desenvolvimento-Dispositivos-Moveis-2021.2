@@ -2,10 +2,21 @@ package com.ufc.navegacaoentretelas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class ActivityADDeEDIT extends AppCompatActivity {
 
@@ -13,6 +24,7 @@ public class ActivityADDeEDIT extends AppCompatActivity {
     EditText editMarca;
     EditText editPlaca;
     EditText editAno;
+
 
     boolean edit;
     int idCarroEditar;
@@ -59,6 +71,29 @@ public class ActivityADDeEDIT extends AppCompatActivity {
         String marca = editMarca.getText().toString();
         String placa = editPlaca.getText().toString();
         String ano = editAno.getText().toString();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> carros = new HashMap<>();
+
+        carros.put("nome", nome);
+        carros.put("marca", marca);
+        carros.put( "placa", placa );
+        carros.put( "ano", ano );
+
+        DocumentReference documentReference = db.collection("carros").document();
+        documentReference.set(carros).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("db", "Sucesso ao salvar dados!");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("db", "Erro ao salvar dados!" + e.toString());
+            }
+        });
 
         intent.putExtra( "nome", nome );
         intent.putExtra( "marca", marca );

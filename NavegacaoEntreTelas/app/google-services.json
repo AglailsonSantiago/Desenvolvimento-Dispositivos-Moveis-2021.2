@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "412235569455",
+    "firebase_url": "https://navegacaoentretelas-81572-default-rtdb.firebaseio.com",
+    "project_id": "navegacaoentretelas-81572",
+    "storage_bucket": "navegacaoentretelas-81572.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412235569455:android:aaff44e3053a70c0a229da",
+        "android_client_info": {
+          "package_name": "com.ufc.navegacaoentretelas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412235569455-ivnga1ptn8p29g8fdgm9tkklshlu8et3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ufc.navegacaoentretelas",
+            "certificate_hash": "8c490c4152cfd7390c108e9a3ef56b20025f4789"
+          }
+        },
+        {
+          "client_id": "412235569455-21i4u456gd6a42udi98ndejqga77u129.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8Zn7EihCud6M7z3Pbrq5wqdh-V7qbEoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412235569455-21i4u456gd6a42udi98ndejqga77u129.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
