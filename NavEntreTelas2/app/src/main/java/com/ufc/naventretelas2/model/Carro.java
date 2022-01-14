@@ -3,15 +3,15 @@ package com.ufc.naventretelas2.model;
 public class Carro {
     private static int contadorId = 0;
 
-    private int id;
+    private String id;
     private String nome;
     private String marca;
     private String placa;
     private String ano;
 
-    public Carro(String nome, String marca, String placa, String ano) {
+    public Carro(String id, String nome, String marca, String placa, String ano) {
 
-        this.id = contadorId++;
+        this.id = id;
 
         this.nome = nome;
         this.marca = marca;
@@ -21,9 +21,11 @@ public class Carro {
 
     public Carro(){}
 
-    public int getId() {
+    public String getId() {
         return id;
     }
+
+    public void setId(String id) { this.id = id; }
 
     public String getNome() {
         return nome;

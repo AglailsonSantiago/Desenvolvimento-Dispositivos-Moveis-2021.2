@@ -1,9 +1,5 @@
 package com.ufc.naventretelas2;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.ui.AppBarConfiguration;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,17 +8,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ufc.naventretelas2.constants.Constants;
 import com.ufc.naventretelas2.model.Carro;
 import com.ufc.naventretelas2.services.DataBase;
@@ -46,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         listar();
 
+
     }
 
     public void listar(){
@@ -57,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         listViewCarros.setAdapter(adapter);
         listViewCarros.setSelector(android.R.color.holo_purple);
 
+        adapter.notifyDataSetChanged();
+
         listViewCarros.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -64,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 selected = position;
             }
         });
-        adapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -115,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void apagarItem(View view){
         if( listaCarros.size() > 0){
+            String carroD;
+            carroD = listaCarros.get(selected).getId();
+            db.deleteCarro(carroD);
+            //Log.d("Delete: ", listaCarros.get(selected).getId());
             listaCarros.remove(selected);
             adapter.notifyDataSetChanged();
         }
@@ -131,12 +130,13 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode == Constants.REQUEST_ADD && resultCode == Constants.RESULT_ADD){
 
+            String id = (String) data.getExtras().get("id");
             String nome = (String) data.getExtras().get("nome");
             String marca = (String) data.getExtras().get("marca");
             String placa = (String) data.getExtras().get("placa");
             String ano = (String) data.getExtras().get("ano");
 
-            Carro carro = new Carro(nome, marca, placa, ano);
+            Carro carro = new Carro(id, nome, marca, placa, ano);
             Log.d("Main", carro.getNome());
             listaCarros.add(carro);
             adapter.notifyDataSetChanged();
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             String marca = (String) data.getExtras().get("marca");
             String placa = (String) data.getExtras().get("placa");
             String ano = (String) data.getExtras().get("ano");
-            int idEditar = (int) data.getExtras().get("id");
+            String idEditar = (String) data.getExtras().get("id");
 
             for(Carro carro : listaCarros){
                 if(carro.getId() == idEditar){
@@ -165,5 +165,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 }

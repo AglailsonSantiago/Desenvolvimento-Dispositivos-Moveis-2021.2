@@ -19,7 +19,7 @@ public class ActivityADDeEDIT extends AppCompatActivity {
     EditText editAno;
 
     boolean edit;
-    int idCarroEditar;
+    String idCarroEditar;
 
 
     @Override
@@ -39,7 +39,7 @@ public class ActivityADDeEDIT extends AppCompatActivity {
             String marca = (String) getIntent().getExtras().get("marca");
             String placa = (String) getIntent().getExtras().get("placa");
             String ano = (String) getIntent().getExtras().get("ano");
-            idCarroEditar = (int) getIntent().getExtras().get("id");
+            idCarroEditar = (String) getIntent().getExtras().get("id");
 
             editNome.setText(nome);
             editMarca.setText(marca);
@@ -72,14 +72,18 @@ public class ActivityADDeEDIT extends AppCompatActivity {
         carro.setPlaca(placa);
         carro.setAno(ano);
 
-        db.addCarro(carro);
-
         intent.putExtra( "nome", nome );
         intent.putExtra( "marca", marca );
         intent.putExtra( "placa", placa );
         intent.putExtra( "ano", ano );
 
-        if( edit ) intent.putExtra( "id", idCarroEditar );
+        if( edit == true ) {
+            intent.putExtra("id", idCarroEditar);
+            db.updateCarro(carro, idCarroEditar);
+        }
+        else {
+            carro.setId(db.addCarro(carro));
+        }
 
         setResult( Constants.RESULT_ADD, intent );
 

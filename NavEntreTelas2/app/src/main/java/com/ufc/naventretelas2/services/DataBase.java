@@ -26,7 +26,7 @@ public class DataBase {
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-    public void addCarro(Carro car){
+    public String addCarro(Carro car){
         Map<String, Object> carro = new HashMap<>();
 
         carro.put("nome", car.getNome());
@@ -40,6 +40,7 @@ public class DataBase {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("DB", "Documento adicionado com ID:" + documentReference.getId());
+                        car.setId(documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -48,7 +49,7 @@ public class DataBase {
                         Log.w("DB", "Erro: " + e);
                     }
                 });
-
+        return car.getId();
     }
 
     public ArrayList<Carro> listaCarros(){
@@ -61,9 +62,9 @@ public class DataBase {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot document : task.getResult()){
-                                Log.d("DB", "Carro: " + document.getId() + "=> " + document.getString("nome"));
+                                //Log.d("DB", "Carro: " + document.getId() + "=> " + document.getString("nome"));
 
-                                listaCarros.add(new Carro(document.getString("nome"), document.getString("marca"),
+                                listaCarros.add(new Carro(document.getId(), document.getString("nome"), document.getString("marca"),
                                         document.getString("placa"), document.getString("ano")));
 
                             }
@@ -74,6 +75,51 @@ public class DataBase {
                 });
 
         return listaCarros;
+    }
+
+    public void deleteCarro(String id){
+
+        db.collection("carros").document(id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("DB: ", "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("DB: ", "Error!");
+                    }
+                });
+
+    }
+
+    public void updateCarro(Carro car, String id){
+        DocumentReference documentReference = FirebaseFirestore.getInstance()
+                .collection("carros")
+                .document(id);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("nome", car.getNome());
+        map.put("marca", car.getMarca());
+        map.put("placa", car.getPlaca());
+        map.put("ano", car.getAno());
+
+        documentReference.update(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("DB", "Atualizado com sucesso!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("DB", "ERROR: " + e);
+                    }
+                });
     }
 
 }
