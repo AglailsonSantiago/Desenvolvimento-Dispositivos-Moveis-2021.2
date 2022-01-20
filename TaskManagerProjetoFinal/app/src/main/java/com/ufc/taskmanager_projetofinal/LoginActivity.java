@@ -1,8 +1,10 @@
 package com.ufc.taskmanager_projetofinal;
 
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -12,4 +14,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
+    public void cadastro(View view){
+        Intent intent = new Intent(this, CadastroActivity.class);
+        startActivity(intent);
+    }
 }
