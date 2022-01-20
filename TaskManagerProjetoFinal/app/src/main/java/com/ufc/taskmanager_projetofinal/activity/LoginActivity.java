@@ -1,10 +1,12 @@
-package com.ufc.taskmanager_projetofinal;
+package com.ufc.taskmanager_projetofinal.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.ufc.taskmanager_projetofinal.R;
 
 public class LoginActivity extends AppCompatActivity {
 

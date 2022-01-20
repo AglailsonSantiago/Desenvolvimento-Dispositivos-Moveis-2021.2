@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "345330523888",
+    "firebase_url": "https://taskmanager-projetofinal-default-rtdb.firebaseio.com",
     "project_id": "taskmanager-projetofinal",
     "storage_bucket": "taskmanager-projetofinal.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:345330523888:android:6c53b7b2032bc12ec1ac35",
+        "mobilesdk_app_id": "1:345330523888:android:746296104ce49001c1ac35",
         "android_client_info": {
           "package_name": "com.ufc.taskmanager_projetofinal"
         }
