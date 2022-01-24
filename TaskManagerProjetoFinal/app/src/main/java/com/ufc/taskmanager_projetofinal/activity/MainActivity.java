@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     public void deslogar(){
         try {
             auth.signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         } catch (Exception e){
             e.printStackTrace();
         }

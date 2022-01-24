@@ -3,12 +3,18 @@ package com.ufc.taskmanager_projetofinal.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ufc.taskmanager_projetofinal.R;
+import com.ufc.taskmanager_projetofinal.adapter.ContatosAdapter;
+import com.ufc.taskmanager_projetofinal.model.User;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +31,10 @@ public class ContatosFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recyclerViewListaContatos;
+    private ContatosAdapter adapter;
+    private ArrayList<User> listaContatos = new ArrayList<>();
 
     public ContatosFragment() {
         // Required empty public constructor
@@ -61,6 +71,19 @@ public class ContatosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contatos, container, false);
+        View view = inflater.inflate(R.layout.fragment_contatos, container, false);
+
+        recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos);
+
+        //configurar adapter
+        adapter = new ContatosAdapter(listaContatos, getActivity());
+
+        //configurar recyclerview
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewListaContatos.setLayoutManager(layoutManager);
+        recyclerViewListaContatos.setHasFixedSize(true);
+        recyclerViewListaContatos.setAdapter(adapter);
+
+        return view;
     }
 }

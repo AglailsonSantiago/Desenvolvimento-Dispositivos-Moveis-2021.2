@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.ufc.taskmanager_projetofinal.R;
 import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
+import com.ufc.taskmanager_projetofinal.helper.Base64Custom;
+import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
 import com.ufc.taskmanager_projetofinal.model.User;
 
 public class CadastroActivity extends AppCompatActivity {
@@ -45,9 +47,21 @@ public class CadastroActivity extends AppCompatActivity {
                 String excecao = "";
 
                 if(task.isSuccessful()){
+
+                    try {
+
+                        String identificador = Base64Custom.codificarBase64(user.getEmail());
+                        user.setId(identificador);
+                        user.salvar();
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     Toast.makeText(CadastroActivity.this,
                             "Sucesso ao cadastrar usuário!",
                             Toast.LENGTH_SHORT).show();
+                    UserFirebase.atualizarNomeUser(user.getNome());
                     finish();
                 } else {
                     try {

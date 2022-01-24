@@ -53,4 +53,5 @@ dependencies {
     implementation 'com.ogaclejapan.smarttablayout:utils-v4:1.7.0@aar'
     //para arredondar imagem
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
 }
