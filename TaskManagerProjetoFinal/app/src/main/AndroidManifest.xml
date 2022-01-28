@@ -4,12 +4,11 @@
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true"
-        />
+        android:required="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +18,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskManagerProjetoFinal"
         android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".activity.CadastroGrupoActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.GrupoActivity" />
+        <activity
+            android:name=".activity.GrupoActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
+        <activity
+            android:name=".activity.ChatActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.ConfiguracoesActivity"
             android:exported="false"

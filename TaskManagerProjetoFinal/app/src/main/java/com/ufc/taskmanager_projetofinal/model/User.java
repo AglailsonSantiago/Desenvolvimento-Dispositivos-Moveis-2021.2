@@ -6,10 +6,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
 import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public class User implements Serializable {
 
     private String id;
     private String nome;

@@ -1,5 +1,6 @@
 package com.ufc.taskmanager_projetofinal.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,14 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.ufc.taskmanager_projetofinal.R;
+import com.ufc.taskmanager_projetofinal.activity.ChatActivity;
+import com.ufc.taskmanager_projetofinal.activity.GrupoActivity;
 import com.ufc.taskmanager_projetofinal.adapter.ContatosAdapter;
 import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
+import com.ufc.taskmanager_projetofinal.helper.RecyclerItemClickListener;
+import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
 import com.ufc.taskmanager_projetofinal.model.User;
 
 import java.util.ArrayList;
@@ -43,6 +50,7 @@ public class ContatosFragment extends Fragment {
     private ArrayList<User> listaContatos = new ArrayList<>();
     private DatabaseReference usersRef;
     private ValueEventListener valueEventListenerContatos;
+    private FirebaseUser userAtual;
 
     public ContatosFragment() {
         // Required empty public constructor
@@ -83,6 +91,7 @@ public class ContatosFragment extends Fragment {
 
         recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos);
         usersRef = ConfiguracaoFirebase.getFirebaseDatabase().child("users");
+        userAtual = UserFirebase.getUserAtual();
 
         //configurar adapter
         adapter = new ContatosAdapter(listaContatos, getActivity());
@@ -93,14 +102,56 @@ public class ContatosFragment extends Fragment {
         recyclerViewListaContatos.setHasFixedSize(true);
         recyclerViewListaContatos.setAdapter(adapter);
 
+        //Configurar evento de click no recyclerview
+        recyclerViewListaContatos.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getActivity(),
+                        recyclerViewListaContatos,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                                User userSelecionado = listaContatos.get(position);
+                                boolean cabecalho = userSelecionado.getEmail().isEmpty();
+
+                                if(cabecalho){
+
+                                    Intent i = new Intent(getActivity(), GrupoActivity.class);
+                                    startActivity(i);
+
+                                } else{
+                                    Intent i = new Intent(getActivity(), ChatActivity.class);
+                                    //i.putExtra("chatContato", userSelecionado);
+                                    startActivity(i);
+                                }
+
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
+
+
+        //Define um usuário com email vazio para ser utilizado como cabeçalho
+        User itemGrupo = new User();
+        itemGrupo.setNome("Nova Tarefa em Grupo");
+        itemGrupo.setEmail("");
+
+        listaContatos.add(itemGrupo);
+        recuperarContatos();
+
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        recuperarContatos();
-    }
 
     @Override
     public void onStop() {
@@ -114,7 +165,11 @@ public class ContatosFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dados : snapshot.getChildren()){
                     User user = dados.getValue(User.class);
-                    listaContatos.add(user);
+
+                    String emailUserAtual = userAtual.getEmail();
+                    if(!emailUserAtual.equals(user.getEmail())){
+                        listaContatos.add(user);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
