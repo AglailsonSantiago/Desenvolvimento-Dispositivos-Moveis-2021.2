@@ -2,7 +2,6 @@ package com.ufc.taskmanager_projetofinal.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -14,7 +13,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.ufc.taskmanager_projetofinal.R;
 import com.ufc.taskmanager_projetofinal.adapter.GrupoSelecionadoAdapter;
-import com.ufc.taskmanager_projetofinal.helper.RecyclerItemClickListener;
 import com.ufc.taskmanager_projetofinal.model.User;
 
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ public class CadastroGrupoActivity extends AppCompatActivity {
         textTotalParticipantes = findViewById(R.id.textTotalParticipantes);
         recyclerMembrosSelecionados = findViewById(R.id.recyclerMembrosGrupo);
 
-        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        FloatingActionButton fab = findViewById(R.id.fabEnviar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

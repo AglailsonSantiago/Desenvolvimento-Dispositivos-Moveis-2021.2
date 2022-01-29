@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //verificar se os campos de login estão preenchidos
     public void validarAuthUser(View view){
         String textoEmail = email.getText().toString();
         String textoSenha = senha.getText().toString();

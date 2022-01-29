@@ -14,6 +14,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMensagens"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
@@ -43,7 +44,7 @@
             android:paddingRight="16dp">
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/editMensagem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -60,13 +61,15 @@
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/fabEnviar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:onClick="enviarMensagem"
             app:backgroundTint="@color/teal_700"
             app:fabSize="mini"
-            app:srcCompat="@drawable/ic_enviar_branco_24" />
+            app:srcCompat="@drawable/ic_enviar_branco_24"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 
 </LinearLayout>
