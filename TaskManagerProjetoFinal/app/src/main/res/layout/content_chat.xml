@@ -54,9 +54,16 @@
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imageGaleria"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                app:srcCompat="@drawable/ic_photo_cinza_24" />
+
+            <ImageView
+                android:id="@+id/imageCamera"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/ic_camera_cinza_24" />
         </LinearLayout>
 

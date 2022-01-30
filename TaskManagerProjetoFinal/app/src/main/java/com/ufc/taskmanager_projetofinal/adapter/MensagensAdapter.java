@@ -51,21 +51,28 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Mensagem mensagem = mensagens.get(position);
-        String msg = mensagem.getMensagem();
+        String msg = mensagem.getTextoMensagem();
         String imagem = mensagem.getImagem();
 
         if(imagem != null){
             Uri url = Uri.parse(imagem);
             Glide.with(context).load(url).into(holder.imagem);
+
+            //esconder o texto
+            holder.mensagem.setVisibility(View.GONE);
+
         } else{
             holder.mensagem.setText(msg);
+
+            //esconder a imagem
+            holder.imagem.setVisibility(View.GONE);
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mensagens.size();
     }
 
     @Override

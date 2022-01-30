@@ -3,7 +3,7 @@ package com.ufc.taskmanager_projetofinal.model;
 public class Mensagem {
 
     private String idUser;
-    private String mensagem;
+    private String textoMensagem;
     private String imagem;
 
     public Mensagem() {
@@ -17,12 +17,12 @@ public class Mensagem {
         this.idUser = idUser;
     }
 
-    public String getMensagem() {
-        return mensagem;
+    public String getTextoMensagem() {
+        return textoMensagem;
     }
 
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
+    public void setTextoMensagem(String textoMensagem) {
+        this.textoMensagem = textoMensagem;
     }
 
     public String getImagem() {
