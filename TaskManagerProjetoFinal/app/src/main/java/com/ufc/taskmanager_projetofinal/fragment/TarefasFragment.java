@@ -1,14 +1,34 @@
 package com.ufc.taskmanager_projetofinal.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.ufc.taskmanager_projetofinal.R;
+import com.ufc.taskmanager_projetofinal.activity.ChatActivity;
+import com.ufc.taskmanager_projetofinal.adapter.ConversasAdapter;
+import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
+import com.ufc.taskmanager_projetofinal.helper.RecyclerItemClickListener;
+import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
+import com.ufc.taskmanager_projetofinal.model.Conversa;
+import com.ufc.taskmanager_projetofinal.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +45,13 @@ public class TarefasFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recyclerViewConversas;
+    private List<Conversa> listaConversas = new ArrayList<>();
+    private ConversasAdapter adapter;
+    private DatabaseReference database;
+    private DatabaseReference conversasRef;
+    private ChildEventListener childEventListenerConversas;
 
     public TarefasFragment() {
         // Required empty public constructor
@@ -60,7 +87,100 @@ public class TarefasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tarefas, container, false);
+        View view = inflater.inflate(R.layout.fragment_tarefas, container, false);
+
+        recyclerViewConversas = view.findViewById(R.id.recyclerListaTarefas);
+
+        //configurar o adapter
+        adapter = new ConversasAdapter(listaConversas, getActivity());
+
+        //configurar o recyclerview
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewConversas.setLayoutManager(layoutManager);
+        recyclerViewConversas.setHasFixedSize(true);
+        recyclerViewConversas.setAdapter(adapter);
+
+        //configurar evento de clique
+        recyclerViewConversas.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getActivity(),
+                        recyclerViewConversas,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Conversa conversaSelecionada = listaConversas.get(position);
+                                Intent i = new Intent(getActivity(), ChatActivity.class);
+                                i.putExtra("chatContato", conversaSelecionada.getUserExibicao());
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
+
+        //configura conversasRef
+        String identificadorUser = UserFirebase.getIdenficadorUser();
+        database = ConfiguracaoFirebase.getFirebaseDatabase();
+        conversasRef = database.child("conversas").child(identificadorUser);
+
+        return view;
+
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        recuperarConversas();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        conversasRef.removeEventListener(childEventListenerConversas);
+    }
+
+    public void recuperarConversas(){
+
+        childEventListenerConversas = conversasRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                //recuperar conversas
+                Conversa conversa = snapshot.getValue(Conversa.class);
+                listaConversas.add(conversa);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
 }

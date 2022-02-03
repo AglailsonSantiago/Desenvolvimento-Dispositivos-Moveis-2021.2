@@ -12,6 +12,7 @@
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/drawable/ic_launcher_background.xml" value="0.19479166666666667" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/drawable/ic_pesquisa_branco.xml" value="0.1828125" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/drawable/ic_photo_cinza_24.xml" value="0.16145833333333334" />
+        <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/drawable/ic_seta_direita_black_24.xml" value="0.2203125" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/activity_cadastro.xml" value="0.25" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/activity_cadastro_grupo.xml" value="0.22" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/activity_chat.xml" value="0.33" />
@@ -24,6 +25,7 @@
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/adapter_grupo_selecionado.xml" value="0.22" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/adapter_mensagem_destinatario.xml" value="0.25" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/adapter_mensagem_remetente.xml" value="0.25" />
+        <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/adapter_topico.xml" value="0.33" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/content_cadastro_grupo.xml" value="0.33" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/content_chat.xml" value="0.22" />
         <entry key="..\:/Users/Aglailson Santiago/Documents/Desenvolvimento-Dispositivos-Moveis-2021.2/TaskManagerProjetoFinal/app/src/main/res/layout/content_grupo.xml" value="0.20416666666666666" />
