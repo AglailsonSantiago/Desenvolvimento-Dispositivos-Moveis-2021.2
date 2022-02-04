@@ -9,8 +9,14 @@ public class Conversa {
     private String idDestinatario;
     private String ultimamensagem;
     private User userExibicao;
+    private String isTarefa;
+    private Tarefa tarefa;
+
 
     public Conversa() {
+
+        this.setIsTarefa("false");
+
     }
 
     public void salvar(){
@@ -53,5 +59,21 @@ public class Conversa {
 
     public void setUserExibicao(User userExibicao) {
         this.userExibicao = userExibicao;
+    }
+
+    public String getIsTarefa() {
+        return isTarefa;
+    }
+
+    public void setIsTarefa(String isTarefa) {
+        this.isTarefa = isTarefa;
+    }
+
+    public Tarefa getTarefa() {
+        return tarefa;
+    }
+
+    public void setTarefa(Tarefa tarefa) {
+        this.tarefa = tarefa;
     }
 }

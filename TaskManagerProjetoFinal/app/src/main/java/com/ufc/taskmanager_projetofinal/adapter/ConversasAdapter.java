@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ufc.taskmanager_projetofinal.R;
 import com.ufc.taskmanager_projetofinal.model.Conversa;
+import com.ufc.taskmanager_projetofinal.model.Tarefa;
 import com.ufc.taskmanager_projetofinal.model.User;
 
 import java.util.List;
@@ -45,14 +46,27 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
 
         holder.ultimaMsg.setText(conversa.getUltimamensagem());
 
-        User user = conversa.getUserExibicao();
-        holder.nome.setText(user.getNome());
+        if(conversa.getIsTarefa().equals("true")){
+            Tarefa tarefa = conversa.getTarefa();
+            holder.nome.setText(tarefa.getNome());
 
-        if(user.getFoto() != null){
-            Uri uri = Uri.parse(user.getFoto());
-            Glide.with(context).load(uri).into(holder.foto);
+            if(tarefa.getFoto() != null){
+                Uri uri = Uri.parse(tarefa.getFoto());
+                Glide.with(context).load(uri).into(holder.foto);
+            } else{
+                holder.foto.setImageResource(R.drawable.padrao);
+            }
+
         } else{
-            holder.foto.setImageResource(R.drawable.padrao);
+            User user = conversa.getUserExibicao();
+            holder.nome.setText(user.getNome());
+
+            if(user.getFoto() != null){
+                Uri uri = Uri.parse(user.getFoto());
+                Glide.with(context).load(uri).into(holder.foto);
+            } else{
+                holder.foto.setImageResource(R.drawable.padrao);
+            }
         }
 
     }

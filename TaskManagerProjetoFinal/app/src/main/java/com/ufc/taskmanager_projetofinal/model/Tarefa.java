@@ -2,10 +2,12 @@ package com.ufc.taskmanager_projetofinal.model;
 
 import com.google.firebase.database.DatabaseReference;
 import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
+import com.ufc.taskmanager_projetofinal.helper.Base64Custom;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Tarefa {
+public class Tarefa implements Serializable {
 
     private String id;
     private String nome;
@@ -29,6 +31,22 @@ public class Tarefa {
         DatabaseReference tarefaRef = database.child("tarefas");
 
         tarefaRef.child(getId()).setValue(this);
+
+        //salvar conversa para membros da tarefa
+        for(User membro : getMembros()){
+
+            String idRemetente = Base64Custom.codificarBase64(membro.getEmail());
+            String idDestinatario = getId();
+
+            Conversa conversa = new Conversa();
+            conversa.setIdRemetente(idRemetente);
+            conversa.setIdDestinatario(idDestinatario);
+            conversa.setUltimamensagem("");
+            conversa.setIsTarefa("true");
+            conversa.setTarefa(this);
+
+            conversa.salvar();
+        }
 
     }
 

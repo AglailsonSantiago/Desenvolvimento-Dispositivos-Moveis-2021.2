@@ -40,6 +40,7 @@ import com.ufc.taskmanager_projetofinal.helper.Base64Custom;
 import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
 import com.ufc.taskmanager_projetofinal.model.Conversa;
 import com.ufc.taskmanager_projetofinal.model.Mensagem;
+import com.ufc.taskmanager_projetofinal.model.Tarefa;
 import com.ufc.taskmanager_projetofinal.model.User;
 
 import java.io.ByteArrayOutputStream;
@@ -67,6 +68,7 @@ public class ChatActivity extends AppCompatActivity {
     //identificador users remetente e destinatario
     private String idUserRemetente;
     private String idUserDestinatario;
+    private Tarefa tarefa;
 
     private RecyclerView recyclerMensagens;
     private MensagensAdapter adapter;
@@ -97,22 +99,41 @@ public class ChatActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         if(bundle != null){
-            userDestinatario = (User) bundle.getSerializable("chatContato");
-            textViewNome.setText(userDestinatario.getNome());
 
-            String foto = userDestinatario.getFoto();
+            if(bundle.containsKey("chatTarefa")){
 
-            if(foto != null){
-                Uri url = Uri.parse(userDestinatario.getFoto());
-                Glide.with(ChatActivity.this)
-                        .load(url)
-                        .into(circleImageViewFoto);
+                tarefa = (Tarefa) bundle.getSerializable("chatTarefa");
+                idUserDestinatario = tarefa.getId();
+                textViewNome.setText(tarefa.getNome());
+
+                String foto = tarefa.getFoto();
+                if(foto != null){
+                    Uri url = Uri.parse(foto);
+                    Glide.with(ChatActivity.this)
+                            .load(url)
+                            .into(circleImageViewFoto);
+                } else{
+                    circleImageViewFoto.setImageResource(R.drawable.padrao);
+                }
+
+
             } else{
-                circleImageViewFoto.setImageResource(R.drawable.padrao);
+                userDestinatario = (User) bundle.getSerializable("chatContato");
+                textViewNome.setText(userDestinatario.getNome());
+
+                String foto = userDestinatario.getFoto();
+
+                if(foto != null){
+                    Uri url = Uri.parse(userDestinatario.getFoto());
+                    Glide.with(ChatActivity.this)
+                            .load(url)
+                            .into(circleImageViewFoto);
+                } else{
+                    circleImageViewFoto.setImageResource(R.drawable.padrao);
+                }
+
+                idUserDestinatario = Base64Custom.codificarBase64(userDestinatario.getEmail());
             }
-
-            idUserDestinatario = Base64Custom.codificarBase64(userDestinatario.getEmail());
-
         }
 
         //Configurar adapter

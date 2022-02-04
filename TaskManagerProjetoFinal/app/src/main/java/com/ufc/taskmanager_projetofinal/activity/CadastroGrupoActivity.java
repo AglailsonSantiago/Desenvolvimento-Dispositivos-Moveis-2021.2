@@ -136,6 +136,7 @@ public class CadastroGrupoActivity extends AppCompatActivity {
                 tarefa.setNome(nomeTarefa);
                 tarefa.setTopicos(listaTopicos);
                 tarefa.salvar();
+                finish();
             }
         });
 

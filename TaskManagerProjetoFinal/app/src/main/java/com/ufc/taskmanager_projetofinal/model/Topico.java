@@ -1,6 +1,8 @@
 package com.ufc.taskmanager_projetofinal.model;
 
-public class Topico {
+import java.io.Serializable;
+
+public class Topico implements Serializable {
 
     private String titulo;
 

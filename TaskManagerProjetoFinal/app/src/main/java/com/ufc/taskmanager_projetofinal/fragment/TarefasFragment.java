@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,10 @@ import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
 import com.ufc.taskmanager_projetofinal.helper.RecyclerItemClickListener;
 import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
 import com.ufc.taskmanager_projetofinal.model.Conversa;
+import com.ufc.taskmanager_projetofinal.model.Tarefa;
 import com.ufc.taskmanager_projetofinal.model.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,9 +112,19 @@ public class TarefasFragment extends Fragment {
                             @Override
                             public void onItemClick(View view, int position) {
                                 Conversa conversaSelecionada = listaConversas.get(position);
-                                Intent i = new Intent(getActivity(), ChatActivity.class);
-                                i.putExtra("chatContato", conversaSelecionada.getUserExibicao());
-                                startActivity(i);
+
+                                if(conversaSelecionada.getIsTarefa().equals("true")){
+                                    Intent i = new Intent(getActivity(), ChatActivity.class);
+                                    i.putExtra("chatTarefa", (Serializable) conversaSelecionada.getTarefa());
+                                    startActivity(i);
+
+                                } else{
+
+                                    Intent in = new Intent(getActivity(), ChatActivity.class);
+                                    in.putExtra("chatContato", conversaSelecionada.getUserExibicao());
+                                    startActivity(in);
+
+                                }
                             }
 
                             @Override
