@@ -60,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
     private static final int SELECAO_CAMERA = 100;
     private static final int SELECAO_GALERIA = 200;
     private User userDestinatario;
+    User userRemetente;
     private StorageReference storageReference;
     private DatabaseReference database;
     private DatabaseReference mensagensRef;
@@ -94,6 +95,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //recuperar dados do usuario remetente
         idUserRemetente = UserFirebase.getIdenficadorUser();
+        userRemetente = UserFirebase.getDadosUserLogado();
 
         //Recuperar dados do usuário destinatário
         Bundle bundle = getIntent().getExtras();
@@ -176,6 +178,31 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_chat, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.menuLocalizacao:
+
+                break;
+
+            case R.id.menuArquivo:
+
+                break;
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -227,16 +254,41 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Uri> task) {
                                     String url = task.getResult().toString();
 
-                                    Mensagem mensagem = new Mensagem();
-                                    mensagem.setIdUser(idUserRemetente);
-                                    mensagem.setTextoMensagem("imagem.jpeg");
-                                    mensagem.setImagem(url);
+                                    if(userDestinatario != null){ //conversa normal
 
-                                    //salvando para o remetente
-                                    salvarMensagem(idUserRemetente, idUserDestinatario, mensagem);
+                                        Mensagem mensagem = new Mensagem();
+                                        mensagem.setIdUser(idUserRemetente);
+                                        mensagem.setTextoMensagem("imagem.jpeg");
+                                        mensagem.setImagem(url);
 
-                                    //salvando para o destinatario
-                                    salvarMensagem(idUserDestinatario, idUserRemetente, mensagem);
+                                        //salvando para o remetente
+                                        salvarMensagem(idUserRemetente, idUserDestinatario, mensagem);
+
+                                        //salvando para o destinatario
+                                        salvarMensagem(idUserDestinatario, idUserRemetente, mensagem);
+
+                                    } else{ //conversa em grupo
+
+                                        for(User membro: tarefa.getMembros()){
+
+                                            String idRementendeTarefa = Base64Custom.codificarBase64(membro.getEmail());
+                                            String idUserLogadoTarefa = UserFirebase.getIdenficadorUser();
+
+                                            Mensagem mensagem = new Mensagem();
+                                            mensagem.setIdUser(idUserLogadoTarefa);
+                                            mensagem.setTextoMensagem("imagem.jpeg");
+                                            mensagem.setNomeUser(userRemetente.getNome());
+                                            mensagem.setImagem(url);
+
+                                            //salvar mensagem para o membro
+                                            salvarMensagem(idRementendeTarefa, idUserDestinatario, mensagem);
+
+                                            //salvar conversa remetente
+                                            salvarConversa(idRementendeTarefa, idUserDestinatario, userDestinatario, mensagem, true);
+
+                                        }
+
+                                    }
 
                                     Toast.makeText(ChatActivity.this,
                                             "Imagem enviada!",
@@ -256,50 +308,52 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_chat, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()){
-            case R.id.menuLocalizacao:
-
-                finish();
-                break;
-
-            case R.id.menuArquivo:
-
-                break;
-        }
-
-        return super.onContextItemSelected(item);
-    }
-
     public void enviarMensagem(View view){
 
         String textoMensagem = editMensagem.getText().toString();
 
-        if(!textoMensagem.isEmpty()){
+        if(!textoMensagem.isEmpty()){ //conversa normal
 
-            Mensagem msg = new Mensagem();
-            msg.setIdUser(idUserRemetente);
-            msg.setTextoMensagem(textoMensagem);
+            if(userDestinatario != null){
 
-            //salvar msg para o remetente
-            salvarMensagem(idUserRemetente, idUserDestinatario, msg);
+                Mensagem msg = new Mensagem();
+                msg.setIdUser(idUserRemetente);
+                msg.setTextoMensagem(textoMensagem);
 
-            //salvar msg para o destinatario
-            salvarMensagem(idUserDestinatario, idUserRemetente, msg);
+                //salvar msg para o remetente
+                salvarMensagem(idUserRemetente, idUserDestinatario, msg);
 
-            //salvar conversa
-            salvarConversa(msg);
+                //salvar msg para o destinatario
+                salvarMensagem(idUserDestinatario, idUserRemetente, msg);
+
+                //salvar conversa remetente
+                salvarConversa(idUserRemetente, idUserDestinatario, userDestinatario,msg, false);
+
+                //salvar conversa destinatario
+                userRemetente = UserFirebase.getDadosUserLogado();
+                salvarConversa(idUserDestinatario, idUserRemetente, userRemetente,msg, false);
+
+            } else{ //conversa em grupo
+
+                for(User membro: tarefa.getMembros()){
+
+                    String idRementendeTarefa = Base64Custom.codificarBase64(membro.getEmail());
+                    String idUserLogadoTarefa = UserFirebase.getIdenficadorUser();
+
+                    Mensagem mensagem = new Mensagem();
+                    mensagem.setIdUser(idUserLogadoTarefa);
+                    mensagem.setTextoMensagem(textoMensagem);
+                    mensagem.setNomeUser(userRemetente.getNome());
+
+                    //salvar mensagem para o membro
+                    salvarMensagem(idRementendeTarefa, idUserDestinatario, mensagem);
+
+                    //salvar conversa remetente
+                    salvarConversa(idRementendeTarefa, idUserDestinatario, userDestinatario, mensagem, true);
+
+                }
+
+            }
 
         } else{
 
@@ -310,14 +364,20 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void salvarConversa(Mensagem msg){
+    private void salvarConversa(String idRemetente, String idDestinatario, User userExibicao, Mensagem msg, boolean isTarefa){
 
         Conversa conversaRemetente = new Conversa();
-        conversaRemetente.setIdRemetente(idUserRemetente);
-        conversaRemetente.setIdDestinatario(idUserDestinatario);
+        conversaRemetente.setIdRemetente(idRemetente);
+        conversaRemetente.setIdDestinatario(idDestinatario);
         conversaRemetente.setUltimamensagem(msg.getTextoMensagem());
-        conversaRemetente.setUserExibicao(userDestinatario);
 
+        if(isTarefa){ //conversa na tarefa em grupo
+            conversaRemetente.setIsTarefa("true");
+            conversaRemetente.setTarefa(tarefa);
+        } else{ //conversa normal
+            conversaRemetente.setUserExibicao(userExibicao);
+            conversaRemetente.setIsTarefa("false");
+        }
         conversaRemetente.salvar();
 
     }
@@ -347,6 +407,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void recuperarMensagens(){
+
+        listaMensagens.clear();
 
         childEventListenerMensagens = mensagensRef.addChildEventListener(new ChildEventListener() {
             @Override

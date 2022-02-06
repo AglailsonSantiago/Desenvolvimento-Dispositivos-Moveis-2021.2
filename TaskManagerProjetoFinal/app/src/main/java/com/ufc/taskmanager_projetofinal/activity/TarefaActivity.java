@@ -2,7 +2,6 @@ package com.ufc.taskmanager_projetofinal.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,10 +25,9 @@ import com.ufc.taskmanager_projetofinal.helper.RecyclerItemClickListener;
 import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
 import com.ufc.taskmanager_projetofinal.model.User;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GrupoActivity extends AppCompatActivity {
+public class TarefaActivity extends AppCompatActivity {
 
     private RecyclerView recyclerMembrosSelecionados, recyclerMembros;
     private ContatosAdapter contatosAdapter;
@@ -154,7 +151,7 @@ public class GrupoActivity extends AppCompatActivity {
         fabAvancarCadastro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(GrupoActivity.this, CadastroGrupoActivity.class);
+                Intent i = new Intent(TarefaActivity.this, CadastroTarefaActivity.class);
 
                 i.putExtra("membros", listaMembrosSelecionados);
 

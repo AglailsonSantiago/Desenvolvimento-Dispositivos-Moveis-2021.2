@@ -12,7 +12,7 @@ public class Tarefa implements Serializable {
     private String id;
     private String nome;
     private String foto;
-    private List<Topico> topicos;
+    private String descricao;
     private List<User> membros;
 
     public Tarefa() {
@@ -75,12 +75,12 @@ public class Tarefa implements Serializable {
         this.foto = foto;
     }
 
-    public List<Topico> getTopicos() {
-        return topicos;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setTopicos(List<Topico> topicos) {
-        this.topicos = topicos;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public List<User> getMembros() {

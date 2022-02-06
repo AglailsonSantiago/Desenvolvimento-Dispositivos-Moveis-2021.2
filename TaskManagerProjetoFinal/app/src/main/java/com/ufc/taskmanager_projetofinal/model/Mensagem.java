@@ -3,10 +3,20 @@ package com.ufc.taskmanager_projetofinal.model;
 public class Mensagem {
 
     private String idUser;
+    private String nomeUser;
     private String textoMensagem;
     private String imagem;
 
     public Mensagem() {
+        this.setNomeUser("");
+    }
+
+    public String getNomeUser() {
+        return nomeUser;
+    }
+
+    public void setNomeUser(String nomeUser) {
+        this.nomeUser = nomeUser;
     }
 
     public String getIdUser() {

@@ -20,11 +20,11 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".activity.CadastroGrupoActivity"
+            android:name=".activity.CadastroTarefaActivity"
             android:exported="false"
-            android:parentActivityName=".activity.GrupoActivity" />
+            android:parentActivityName=".activity.TarefaActivity" />
         <activity
-            android:name=".activity.GrupoActivity"
+            android:name=".activity.TarefaActivity"
             android:exported="false"
             android:parentActivityName=".activity.MainActivity" />
         <activity

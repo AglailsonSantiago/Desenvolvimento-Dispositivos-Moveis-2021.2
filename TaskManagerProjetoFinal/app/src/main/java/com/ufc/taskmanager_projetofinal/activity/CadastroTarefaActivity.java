@@ -26,37 +26,33 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ufc.taskmanager_projetofinal.R;
 import com.ufc.taskmanager_projetofinal.adapter.GrupoSelecionadoAdapter;
-import com.ufc.taskmanager_projetofinal.adapter.TopicoAdapter;
 import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
 import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
 import com.ufc.taskmanager_projetofinal.model.Tarefa;
-import com.ufc.taskmanager_projetofinal.model.Topico;
 import com.ufc.taskmanager_projetofinal.model.User;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CadastroGrupoActivity extends AppCompatActivity {
+public class CadastroTarefaActivity extends AppCompatActivity {
 
     private static final int SELECAO_GALERIA = 200;
     private Toolbar toolbar;
     private ArrayList<User> listaMembrosSelecionados = new ArrayList<>();
-    private ArrayList<Topico> listaTopicos = new ArrayList<>();
     TextView textTotalParticipantes;
     private RecyclerView recyclerMembrosSelecionados;
     private RecyclerView recyclerTopicos;
     private GrupoSelecionadoAdapter grupoSelecionadoAdapter;
-    private TopicoAdapter topicoAdapter;
     private CircleImageView imageTarefa;
     private StorageReference storageReference;
     private Tarefa tarefa;
     private FloatingActionButton fabSalvarTarefa;
     private EditText editNomeTarefa;
-    private EditText editTopico;
-    private TextView textTopico;
+    private EditText editDescricao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +67,10 @@ public class CadastroGrupoActivity extends AppCompatActivity {
         //configurações iniciais
         textTotalParticipantes = findViewById(R.id.textTotalParticipantes);
         recyclerMembrosSelecionados = findViewById(R.id.recyclerMembrosGrupo);
-        recyclerTopicos = findViewById(R.id.recyclerTopicos);
         imageTarefa = findViewById(R.id.imageTarefa);
         fabSalvarTarefa = findViewById(R.id.fabSalvarTarefa);
         editNomeTarefa = findViewById(R.id.editNomeTarefa);
-        editTopico = findViewById(R.id.editTextTopico);
-        textTopico = findViewById(R.id.textTopico);
+        editDescricao = findViewById(R.id.editDescricao);
 
         storageReference = ConfiguracaoFirebase.getFirebaseStorage();
         tarefa = new Tarefa();
@@ -91,18 +85,6 @@ public class CadastroGrupoActivity extends AppCompatActivity {
                 }
             }
         });
-
-        //configurar recyclerview topicos
-        topicoAdapter = new TopicoAdapter(listaTopicos, getApplicationContext());
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-
-        recyclerTopicos.setLayoutManager(layoutManager);
-        recyclerTopicos.setHasFixedSize(true);
-        recyclerTopicos.setAdapter(topicoAdapter);
-
-        topicoAdapter.notifyDataSetChanged();
-
 
         //recuperar lista de membros passada
         if(getIntent().getExtras() != null){
@@ -129,14 +111,19 @@ public class CadastroGrupoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String nomeTarefa = editNomeTarefa.getText().toString();
+                String descricao = editDescricao.getText().toString();
 
                 //adiciona a lista de membros o usuário logado
                 listaMembrosSelecionados.add(UserFirebase.getDadosUserLogado());
                 tarefa.setMembros(listaMembrosSelecionados);
                 tarefa.setNome(nomeTarefa);
-                tarefa.setTopicos(listaTopicos);
+                tarefa.setDescricao(descricao);
                 tarefa.salvar();
-                finish();
+
+                Intent i = new Intent(CadastroTarefaActivity.this, ChatActivity.class);
+                i.putExtra("chatTarefa", (Serializable) tarefa);
+                startActivity(i);
+
             }
         });
 
@@ -165,21 +152,21 @@ public class CadastroGrupoActivity extends AppCompatActivity {
                     //Salvar imagem no firebase
                     final StorageReference imagemRef = storageReference
                             .child("imagens")
-                            .child("grupos")
+                            .child("tarefas")
                             .child(tarefa.getId() + ".jpeg");
 
                     UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(CadastroGrupoActivity.this,
+                            Toast.makeText(CadastroTarefaActivity.this,
                                     "Erro ao fazer upload da imagem",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(CadastroGrupoActivity.this,
+                            Toast.makeText(CadastroTarefaActivity.this,
                                     "Sucesso ao fazer upload da imagem",
                                     Toast.LENGTH_SHORT).show();
                             imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -202,15 +189,5 @@ public class CadastroGrupoActivity extends AppCompatActivity {
 
     }
 
-    public void adcionarTopico(View view){
-        Topico topico = new Topico();
-
-        topico.setTitulo(editTopico.getText().toString());
-
-        listaTopicos.add(topico);
-
-        topicoAdapter.notifyDataSetChanged();
-
-    }
 
 }

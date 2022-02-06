@@ -6,8 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activity.CadastroGrupoActivity"
+    tools:context=".activity.CadastroTarefaActivity"
     tools:showIn="@layout/activity_cadastro_grupo">
 
 
@@ -15,7 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp">
 
 
         <LinearLayout
@@ -48,53 +53,30 @@
             android:layout_height="wrap_content"
             android:text="Defina um nome para a tarefa e uma imagem opcional." />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/editDescricao"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="130dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text_descricao"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="Defina uma descrição para a tarefa."
+            android:inputType="textMultiLine"
+            android:maxLines="50"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#000000"
+            tools:ignore="TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tópico: " />
-
-            <EditText
-                android:id="@+id/editTextTopico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Adicione tópico"
-                android:inputType="textPersonName"
-                tools:ignore="TouchTargetSizeCheck" />
-
-            <Button
-                android:id="@+id/adicionarTopico"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="adcionarTopico"
-                android:text="Adicionar" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerTopicos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textTotalParticipantes"
@@ -107,7 +89,7 @@
             android:id="@+id/recyclerMembrosGrupo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"/>
+            android:scrollbars="horizontal" />
     </LinearLayout>
 
 </LinearLayout>

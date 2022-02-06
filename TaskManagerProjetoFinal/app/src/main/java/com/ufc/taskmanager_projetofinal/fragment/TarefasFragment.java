@@ -166,7 +166,7 @@ public class TarefasFragment extends Fragment {
         childEventListenerConversas = conversasRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                ajustarListaConversas();
                 //recuperar conversas
                 Conversa conversa = snapshot.getValue(Conversa.class);
                 listaConversas.add(conversa);
@@ -193,6 +193,12 @@ public class TarefasFragment extends Fragment {
 
             }
         });
+
+    }
+
+    public void ajustarListaConversas(){
+
+        listaConversas.clear();
 
     }
 

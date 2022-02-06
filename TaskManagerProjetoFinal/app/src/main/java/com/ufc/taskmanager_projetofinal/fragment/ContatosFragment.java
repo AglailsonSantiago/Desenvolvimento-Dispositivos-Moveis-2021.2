@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.ufc.taskmanager_projetofinal.R;
 import com.ufc.taskmanager_projetofinal.activity.ChatActivity;
-import com.ufc.taskmanager_projetofinal.activity.GrupoActivity;
+import com.ufc.taskmanager_projetofinal.activity.TarefaActivity;
 import com.ufc.taskmanager_projetofinal.adapter.ContatosAdapter;
 import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
 import com.ufc.taskmanager_projetofinal.helper.RecyclerItemClickListener;
@@ -116,7 +116,7 @@ public class ContatosFragment extends Fragment {
 
                                 if(cabecalho){
 
-                                    Intent i = new Intent(getActivity(), GrupoActivity.class);
+                                    Intent i = new Intent(getActivity(), TarefaActivity.class);
                                     startActivity(i);
 
                                 } else{
@@ -140,14 +140,7 @@ public class ContatosFragment extends Fragment {
                 )
         );
 
-
-        //Define um usuário com email vazio para ser utilizado como cabeçalho
-        User itemGrupo = new User();
-        itemGrupo.setNome("Nova Tarefa em Grupo");
-        itemGrupo.setEmail("");
-
-        listaContatos.add(itemGrupo);
-        recuperarContatos();
+        adicionaMenuNovatarefa();
 
         return view;
     }
@@ -163,6 +156,8 @@ public class ContatosFragment extends Fragment {
         valueEventListenerContatos = usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                ajustarListaContatos();
                 for(DataSnapshot dados : snapshot.getChildren()){
                     User user = dados.getValue(User.class);
 
@@ -180,4 +175,22 @@ public class ContatosFragment extends Fragment {
             }
         });
     }
+
+    public void ajustarListaContatos(){
+
+        listaContatos.clear();
+        adicionaMenuNovatarefa();
+
+    }
+
+    public void adicionaMenuNovatarefa(){
+        //Define um usuário com email vazio para ser utilizado como cabeçalho
+        User itemTarefa = new User();
+        itemTarefa.setNome("Nova Tarefa em Grupo");
+        itemTarefa.setEmail("");
+
+        listaContatos.add(itemTarefa);
+        recuperarContatos();
+    }
+
 }

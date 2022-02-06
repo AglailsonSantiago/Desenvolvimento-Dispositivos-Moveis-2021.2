@@ -52,7 +52,7 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.MyView
             Glide.with(context).load(uri).into(holder.foto);
         } else{
             if(cabecalho){
-                holder.foto.setImageResource(R.drawable.icone_tarefa);
+                holder.foto.setImageResource(R.drawable.ic_add_task_24);
                 holder.email.setVisibility(View.GONE);
             } else{
                 holder.foto.setImageResource(R.drawable.padrao);
