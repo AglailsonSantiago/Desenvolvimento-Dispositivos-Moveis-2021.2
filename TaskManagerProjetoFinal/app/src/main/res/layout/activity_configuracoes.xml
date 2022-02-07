@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageViewFotoPerfil"
+        android:id="@+id/circleImageViewFotoTarefa"
         android:layout_width="230dp"
         android:layout_height="230dp"
         android:src="@drawable/padrao"
@@ -34,7 +34,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageViewFotoPerfil">
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewFotoTarefa">
 
         <ImageButton
             android:id="@+id/imageButtonCamera"
@@ -70,7 +70,7 @@
         app:layout_constraintVertical_bias="0.27">
 
         <EditText
-            android:id="@+id/editPerfilNome"
+            android:id="@+id/textNomeTarefa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

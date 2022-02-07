@@ -145,6 +145,11 @@ public class ContatosFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        recuperarContatos();
+    }
 
     @Override
     public void onStop() {
@@ -158,6 +163,7 @@ public class ContatosFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 ajustarListaContatos();
+
                 for(DataSnapshot dados : snapshot.getChildren()){
                     User user = dados.getValue(User.class);
 

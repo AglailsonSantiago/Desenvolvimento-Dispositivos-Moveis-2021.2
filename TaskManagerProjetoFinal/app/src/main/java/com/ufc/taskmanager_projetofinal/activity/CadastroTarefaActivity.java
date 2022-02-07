@@ -70,7 +70,7 @@ public class CadastroTarefaActivity extends AppCompatActivity {
         imageTarefa = findViewById(R.id.imageTarefa);
         fabSalvarTarefa = findViewById(R.id.fabSalvarTarefa);
         editNomeTarefa = findViewById(R.id.editNomeTarefa);
-        editDescricao = findViewById(R.id.editDescricao);
+        editDescricao = findViewById(R.id.textDescricao);
 
         storageReference = ConfiguracaoFirebase.getFirebaseStorage();
         tarefa = new Tarefa();

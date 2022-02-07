@@ -44,6 +44,7 @@ import com.ufc.taskmanager_projetofinal.model.Tarefa;
 import com.ufc.taskmanager_projetofinal.model.User;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -53,6 +54,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatActivity extends AppCompatActivity {
 
     private TextView textViewNome;
+
     private CircleImageView circleImageViewFoto;
     private EditText editMensagem;
     private ImageView imageCamera;
@@ -87,6 +89,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //configurações iniciais
         textViewNome = findViewById(R.id.textViewNomeChat);
+
         circleImageViewFoto = findViewById(R.id.circleImageFotoChat);
         editMensagem = findViewById(R.id.editMensagem);
         recyclerMensagens = findViewById(R.id.recyclerMensagens);
@@ -107,6 +110,7 @@ public class ChatActivity extends AppCompatActivity {
                 tarefa = (Tarefa) bundle.getSerializable("chatTarefa");
                 idUserDestinatario = tarefa.getId();
                 textViewNome.setText(tarefa.getNome());
+
 
                 String foto = tarefa.getFoto();
                 if(foto != null){
@@ -181,7 +185,12 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_chat, menu);
+
+        if(userDestinatario != null){
+            inflater.inflate(R.menu.menu_chat, menu);
+        } else{
+            inflater.inflate(R.menu.menu_chat_tarefa, menu);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -190,6 +199,10 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
+            case R.id.menuInfo:
+                informacoes();
+                break;
+
             case R.id.menuLocalizacao:
 
                 break;
@@ -200,6 +213,12 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         return super.onContextItemSelected(item);
+    }
+
+    public void informacoes(){
+        Intent intent = new Intent(this, InformacoesActivity.class);
+        intent.putExtra("infoTarefa", (Serializable) tarefa);
+        startActivity(intent);
     }
 
     @Override

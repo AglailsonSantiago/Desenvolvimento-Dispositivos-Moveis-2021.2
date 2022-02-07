@@ -1,11 +1,15 @@
 package com.ufc.taskmanager_projetofinal.model;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
 import com.ufc.taskmanager_projetofinal.helper.Base64Custom;
+import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Tarefa implements Serializable {
 

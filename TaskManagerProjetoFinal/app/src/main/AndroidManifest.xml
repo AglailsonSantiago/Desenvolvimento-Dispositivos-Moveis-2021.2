@@ -20,6 +20,9 @@
         android:usesCleartextTraffic="true">
 
         <activity
+            android:name=".activity.InformacoesActivity"
+            android:exported="false"/>
+        <activity
             android:name=".activity.CadastroTarefaActivity"
             android:exported="false"
             android:parentActivityName=".activity.TarefaActivity" />
