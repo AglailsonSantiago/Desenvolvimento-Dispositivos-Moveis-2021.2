@@ -151,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.menuLocalizacao:
+                Intent intent = new Intent(this, MapsActivity.class);
+                startActivity(intent);
+
                 break;
 
             case R.id.menuSair:

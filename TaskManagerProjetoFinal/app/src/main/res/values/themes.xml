@@ -24,4 +24,5 @@
     <style name="Theme.TaskManagerProjetoFinal.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.TaskManagerProjetoFinal.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
