@@ -34,7 +34,7 @@ public class InformacoesActivity extends AppCompatActivity {
         circleImageViewTarefa = findViewById(R.id.circleImageViewFotoTarefa);
         circleImageViewTarefa = findViewById(R.id.circleImageViewFotoTarefa);
         toolbar = findViewById(R.id.toolbarPrincipal);
-        setTitle("Editar Informações");
+        setTitle("Informações");
 
         setSupportActionBar(toolbar);
 

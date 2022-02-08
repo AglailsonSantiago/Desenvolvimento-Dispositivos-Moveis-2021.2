@@ -22,12 +22,16 @@ import com.ufc.taskmanager_projetofinal.R;
 import com.ufc.taskmanager_projetofinal.activity.ChatActivity;
 import com.ufc.taskmanager_projetofinal.activity.TarefaActivity;
 import com.ufc.taskmanager_projetofinal.adapter.ContatosAdapter;
+import com.ufc.taskmanager_projetofinal.adapter.ConversasAdapter;
 import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
 import com.ufc.taskmanager_projetofinal.helper.RecyclerItemClickListener;
 import com.ufc.taskmanager_projetofinal.helper.UserFirebase;
+import com.ufc.taskmanager_projetofinal.model.Conversa;
 import com.ufc.taskmanager_projetofinal.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -111,7 +115,9 @@ public class ContatosFragment extends Fragment {
                             @Override
                             public void onItemClick(View view, int position) {
 
-                                User userSelecionado = listaContatos.get(position);
+                                List<User> listaUsersAtualizada = adapter.getContatos();
+
+                                User userSelecionado = listaUsersAtualizada.get(position);
                                 boolean cabecalho = userSelecionado.getEmail().isEmpty();
 
                                 if(cabecalho){
@@ -155,6 +161,31 @@ public class ContatosFragment extends Fragment {
     public void onStop() {
         super.onStop();
         usersRef.removeEventListener(valueEventListenerContatos);
+    }
+
+    public void pesquisarContatos(String texto){
+
+        List<User> listaContatosBusca = new ArrayList<>();
+
+        for(User user : listaContatos){
+
+            String nome = user.getNome().toLowerCase();
+            if(nome.contains(texto)){
+                listaContatosBusca.add(user);
+            }
+
+        }
+
+        adapter = new ContatosAdapter(listaContatosBusca, getActivity());
+        recyclerViewListaContatos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+    }
+
+    public void recarregarContatos(){
+        adapter = new ContatosAdapter(listaContatos, getActivity());
+        recyclerViewListaContatos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void recuperarContatos(){

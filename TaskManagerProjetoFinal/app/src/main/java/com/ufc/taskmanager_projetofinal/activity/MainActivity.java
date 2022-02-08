@@ -7,6 +7,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewParent;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -22,9 +25,13 @@ import com.ufc.taskmanager_projetofinal.config.ConfiguracaoFirebase;
 import com.ufc.taskmanager_projetofinal.fragment.ContatosFragment;
 import com.ufc.taskmanager_projetofinal.fragment.TarefasFragment;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
+    private MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         auth = ConfiguracaoFirebase.getAuth();
+
 
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("Task Manager");
@@ -50,6 +58,77 @@ public class MainActivity extends AppCompatActivity {
         SmartTabLayout viewPageTab = findViewById(R.id.viewPagerTab);
         viewPageTab.setViewPager(viewPager);
 
+        searchView = findViewById(R.id.materialSearchPrincipal);
+        searchView.setVoiceSearch( true );
+
+        //listener para o search view
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
+                TarefasFragment fragment = (TarefasFragment) adapter.getPage(0);
+                fragment.recarregarConversas();
+
+            }
+        });
+
+        //listener para caixa de texto
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                switch (viewPager.getCurrentItem()){
+
+                    case 0:
+                        TarefasFragment tarefasFragment = (TarefasFragment) adapter.getPage(0);
+
+                        if(newText != null && !newText.isEmpty()){
+                            tarefasFragment.pesquisarConversas(newText.toLowerCase());
+                        } else{
+                            tarefasFragment.recarregarConversas();
+                        }
+                        break;
+
+                    case 1:
+                        ContatosFragment contatosFragment = (ContatosFragment) adapter.getPage(1);
+
+                        if(newText != null && !newText.isEmpty()){
+                            contatosFragment.pesquisarContatos(newText.toLowerCase());
+                        } else{
+                            contatosFragment.recarregarContatos();
+                        }
+                        break;
+
+                }
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (matches != null && matches.size() > 0) {
+                String searchWrd = matches.get(0);
+                if (!TextUtils.isEmpty(searchWrd)) {
+                    searchView.setQuery(searchWrd, false);
+                }
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -58,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
+        //configurar botao de pesquisa
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+
+        searchView.setMenuItem(item);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -65,6 +149,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
+
+            case R.id.menuLocalizacao:
+                break;
+
             case R.id.menuSair:
                 deslogar();
                 finish();

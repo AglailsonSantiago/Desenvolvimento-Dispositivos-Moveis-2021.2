@@ -111,7 +111,9 @@ public class TarefasFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Conversa conversaSelecionada = listaConversas.get(position);
+
+                                List<Conversa> listaConversasAtualizada = adapter.getConversas();
+                                Conversa conversaSelecionada = listaConversasAtualizada.get(position);
 
                                 if(conversaSelecionada.getIsTarefa().equals("true")){
                                     Intent i = new Intent(getActivity(), ChatActivity.class);
@@ -159,6 +161,43 @@ public class TarefasFragment extends Fragment {
     public void onStop() {
         super.onStop();
         conversasRef.removeEventListener(childEventListenerConversas);
+    }
+
+    public void pesquisarConversas(String texto){
+
+        List<Conversa> listaConversasBusca = new ArrayList<>();
+
+        for(Conversa conversa : listaConversas){
+
+            if(conversa.getUserExibicao() != null){
+                String nome = conversa.getUserExibicao().getNome().toLowerCase();
+                String ultimaMsg = conversa.getUltimamensagem().toLowerCase();
+
+                if(nome.contains(texto) || ultimaMsg.contains(texto)){
+                    listaConversasBusca.add(conversa);
+                }
+
+            } else{
+                String nome = conversa.getTarefa().getNome().toLowerCase();
+                String ultimaMsg = conversa.getUltimamensagem().toLowerCase();
+
+                if(nome.contains(texto) || ultimaMsg.contains(texto)){
+                    listaConversasBusca.add(conversa);
+                }
+            }
+
+        }
+
+        adapter = new ConversasAdapter(listaConversasBusca, getActivity());
+        recyclerViewConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+    }
+
+    public void recarregarConversas(){
+        adapter = new ConversasAdapter(listaConversas, getActivity());
+        recyclerViewConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void recuperarConversas(){

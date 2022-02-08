@@ -186,10 +186,8 @@ public class ChatActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
 
-        if(userDestinatario != null){
+        if(userDestinatario == null){
             inflater.inflate(R.menu.menu_chat, menu);
-        } else{
-            inflater.inflate(R.menu.menu_chat_tarefa, menu);
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -201,14 +199,6 @@ public class ChatActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.menuInfo:
                 informacoes();
-                break;
-
-            case R.id.menuLocalizacao:
-
-                break;
-
-            case R.id.menuArquivo:
-
                 break;
         }
 
